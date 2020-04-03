@@ -2,17 +2,18 @@ package com.dashboard.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 /**
- * Created by saad on 4/2/2020.
+ * Created by Haseeb on 4/3/2020.
  */
-
 @RestController
-public class UsersController {
+public class AuthController {
 
-    @RequestMapping({ "/hello" })
-
+    @RequestMapping({"/auth/token"})
     public String firstPage() {
         System.out.println("Haseeb Khalid");
-        return "Hello World";
+        return "Generate Auth Token";
+
     }
+
 }
