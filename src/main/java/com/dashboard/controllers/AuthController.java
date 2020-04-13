@@ -2,6 +2,7 @@ package com.dashboard.controllers;
 
 import com.dashboard.models.UserModel;
 import com.dashboard.services.IAuthService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +14,18 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class AuthController {
     @Autowired
-    IAuthService authService;
+    private IAuthService authService;
 
     AuthController(IAuthService authService){
         this.authService = authService;
     }
+
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value = "/auth/token", method = RequestMethod.POST)
-    public String token(@RequestBody UserModel model) {
+    public JSONObject token(@RequestBody UserModel model) {
 //        System.out.println("Haseeb Khalid");
 //        String url = "http://localhost:5000/connect/token";
 
-        String item = authService.get_token(model);
-
-        return item;
+        return authService.get_token(model);
     }
 }

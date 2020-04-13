@@ -5,17 +5,20 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URIBuilder;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
+
 import org.apache.http.conn.ssl.*;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContextBuilder;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import javax.net.ssl.*;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -28,9 +31,10 @@ import java.util.List;
  */
 public class AuthService implements IAuthService{
 
-    public String get_token(UserModel userModel){
+    public JSONObject get_token(UserModel userModel) {
+        JSONObject result = null;
         try {
-            CloseableHttpClient  httpClient = createAcceptSelfSignedCertificateClient();
+            CloseableHttpClient httpClient = createAcceptSelfSignedCertificateClient();
             String url = "https://localhost:5001/connect/token";
 //            URIBuilder builder = new URIBuilder(url);
 //            builder.setParameter("client_id", "ro.client")
@@ -65,9 +69,9 @@ public class AuthService implements IAuthService{
             while ((output = br.readLine()) != null) {
                 System.out.println(output);
             }
-
+            result = new JSONObject(output);
             httpClient.getConnectionManager().shutdown();
-
+            httpClient.close();
         } catch (MalformedURLException e) {
 
             e.printStackTrace();
@@ -76,15 +80,17 @@ public class AuthService implements IAuthService{
 
             e.printStackTrace();
 
-        }  catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (KeyStoreException e) {
             e.printStackTrace();
         } catch (KeyManagementException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        return "Token";
+        return result;
     }
 
     private static CloseableHttpClient createAcceptSelfSignedCertificateClient()
