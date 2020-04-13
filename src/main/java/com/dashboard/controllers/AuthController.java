@@ -22,10 +22,10 @@ public class AuthController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value = "/auth/token", method = RequestMethod.POST)
-    public JSONObject token(@RequestBody UserModel model) {
+    public String token(@RequestBody UserModel model) {
 //        System.out.println("Haseeb Khalid");
 //        String url = "http://localhost:5000/connect/token";
-
-        return authService.get_token(model);
+        String item = authService.get_token(model);
+        return item;
     }
 }
